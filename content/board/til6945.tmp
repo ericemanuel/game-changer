@@ -1,0 +1,82 @@
+[gd_scene load_steps=10 format=3 uid="uid://chrwrc557xa21"]
+
+[ext_resource type="Texture2D" uid="uid://cgkysixgk7dua" path="res://content/board/tile.png" id="1_gb1li"]
+[ext_resource type="Script" path="res://content/board/tile.gd" id="1_htkve"]
+[ext_resource type="Script" path="res://content/interactions/bump.gd" id="2_6r4pf"]
+[ext_resource type="Script" path="res://content/interactions/modulate.gd" id="3_gxf0r"]
+[ext_resource type="Animation" uid="uid://g2n4tpy47lmr" path="res://content/interactions/modulate_backwards.res" id="5_mejmh"]
+[ext_resource type="Animation" uid="uid://dugnf0cml8oek" path="res://content/interactions/modulate.res" id="6_5fqfi"]
+
+[sub_resource type="Animation" id="Animation_wtqu4"]
+resource_name = "bump"
+length = 0.3
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("content:position:y")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0, 0),
+"points": PackedFloat32Array(6, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0, 0),
+"times": PackedFloat32Array(0, 0.3)
+}
+
+[sub_resource type="Animation" id="Animation_x0hjo"]
+resource_name = "bump (backwards)"
+length = 0.3
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("content:position:y")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0, 0),
+"points": PackedFloat32Array(1, -0.25, 0, 0.25, 0, 6, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0, 0.3)
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_4pvwk"]
+_data = {
+"bump": SubResource("Animation_wtqu4"),
+"bump_backwards": SubResource("Animation_x0hjo"),
+"modulate": ExtResource("6_5fqfi"),
+"modulate_backwards": ExtResource("5_mejmh")
+}
+
+[node name="tile" type="Node2D"]
+script = ExtResource("1_htkve")
+
+[node name="interactions" type="Node" parent="."]
+
+[node name="bump" type="Node" parent="interactions"]
+script = ExtResource("2_6r4pf")
+
+[node name="modulate" type="Node" parent="interactions"]
+script = ExtResource("3_gxf0r")
+
+[node name="content" type="Node2D" parent="."]
+position = Vector2(0, 6)
+
+[node name="sprite" type="Sprite2D" parent="content"]
+texture_filter = 1
+position = Vector2(0, 2)
+texture = ExtResource("1_gb1li")
+
+[node name="area" type="Area2D" parent="content"]
+
+[node name="shape" type="CollisionPolygon2D" parent="content/area"]
+visible = false
+position = Vector2(0, 2)
+polygon = PackedVector2Array(0, -17, 16, -9, 16, -8, 0, 0, -16, -8, -16, -9)
+
+[node name="animation" type="AnimationPlayer" parent="content"]
+root_node = NodePath("../..")
+libraries = {
+"": SubResource("AnimationLibrary_4pvwk")
+}
+
+[connection signal="input_event" from="content/area" to="." method="_input_event"]
+[connection signal="mouse_entered" from="content/area" to="." method="_mouse_entered"]
+[connection signal="mouse_exited" from="content/area" to="." method="_mouse_exited"]

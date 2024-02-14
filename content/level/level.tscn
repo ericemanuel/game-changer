@@ -1,0 +1,33 @@
+[gd_scene load_steps=6 format=3 uid="uid://df1b2c1iealb3"]
+
+[ext_resource type="Script" path="res://content/services/bump.gd" id="1_5nkjn"]
+[ext_resource type="Script" path="res://content/services/modulate.gd" id="2_qs2wv"]
+[ext_resource type="Script" path="res://content/services/navigation.gd" id="2_teokd"]
+[ext_resource type="PackedScene" uid="uid://dyt665n50ythe" path="res://content/board/board.tscn" id="2_ui23l"]
+[ext_resource type="PackedScene" uid="uid://cp71xybl0b4g0" path="res://content/characters/kara.tscn" id="3_mn4fv"]
+
+[node name="level" type="Node"]
+
+[node name="services" type="Node" parent="."]
+
+[node name="combat" type="Node" parent="services"]
+
+[node name="interactions" type="Node" parent="services"]
+
+[node name="bump" type="Node" parent="services/interactions"]
+script = ExtResource("1_5nkjn")
+
+[node name="modulate" type="Node" parent="services/interactions"]
+script = ExtResource("2_qs2wv")
+
+[node name="navigation" type="Node" parent="services"]
+script = ExtResource("2_teokd")
+
+[node name="board" parent="." instance=ExtResource("2_ui23l")]
+position = Vector2(100, 180)
+
+[node name="characters" type="Node" parent="."]
+
+[node name="kara" parent="characters" groups=["allies"] instance=ExtResource("3_mn4fv")]
+position = Vector2(100, 139)
+coordinates = Vector2(6, 1)

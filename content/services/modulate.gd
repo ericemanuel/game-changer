@@ -1,24 +1,22 @@
 extends Node
 
+signal modulate
+
 func _ready():
-	messenger.connect('tile_entered', check_character)
-	messenger.connect('tile_exited', check_character)
-	messenger.connect('character_entered', check_tile)
-	messenger.connect('character_exited', check_tile)
+	messenger.connect('entered', check_coordinates)
+	messenger.connect('exited', check_coordinates)
 
-func check_character(tile):
-	for character in get_tree().get_nodes_in_group('characters'):
-		if character.coordinates == tile.coordinates:
-			modulate(character)
-			break
-	modulate(tile)
+func check_coordinates(node):
+	if node.is_in_group('tiles'):
+		for character in get_tree().get_nodes_in_group('characters'):
+			if character.coordinates == node.coordinates:
+				messenger.emit_signal('modulate', character)
+				break
 
-func check_tile(character):
-	for tile in get_tree().get_nodes_in_group('tiles'):
-		if tile.coordinates == character.coordinates:
-			modulate(tile)
-			break
-	modulate(character)
+	elif node.is_in_group('characters'):
+		for tile in get_tree().get_nodes_in_group('tiles'):
+			if tile.coordinates == node.coordinates:
+				messenger.emit_signal('modulate', tile)
+				break
 
-func modulate(node):
-	node.find_child('modulate').modulate()
+	messenger.emit_signal('modulate', node)

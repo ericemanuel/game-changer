@@ -1,0 +1,16 @@
+[remap]
+
+importer="bitmap"
+type="BitMap"
+uid="uid://rkudxqlykp4q"
+path="res://.godot/imported/kara_mask.png-09608f5e0f173a04ae430b9d6fdb16d7.res"
+
+[deps]
+
+source_file="res://content/characters/kara_mask.png"
+dest_files=["res://.godot/imported/kara_mask.png-09608f5e0f173a04ae430b9d6fdb16d7.res"]
+
+[params]
+
+create_from=1
+threshold=0.5

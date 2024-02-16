@@ -1,0 +1,16 @@
+[remap]
+
+importer="bitmap"
+type="BitMap"
+uid="uid://bvvacn5a4wrbl"
+path="res://.godot/imported/tile_mask.png-e3e89d72fea5abe5e4f7d121b9e0bf3d.res"
+
+[deps]
+
+source_file="res://content/board/tile_mask.png"
+dest_files=["res://.godot/imported/tile_mask.png-e3e89d72fea5abe5e4f7d121b9e0bf3d.res"]
+
+[params]
+
+create_from=1
+threshold=0.5

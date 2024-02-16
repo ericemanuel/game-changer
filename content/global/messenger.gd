@@ -1,9 +1,10 @@
 extends Node
 
-signal tile_selected
-signal tile_entered
-signal tile_exited
+## bottom-up signals
+signal selected
+signal entered
+signal exited
 
-signal character_selected
-signal character_entered
-signal character_exited
+## up-down signals
+signal bump
+signal modulate

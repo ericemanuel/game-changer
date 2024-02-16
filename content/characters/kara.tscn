@@ -1,52 +1,30 @@
-[gd_scene load_steps=11 format=3 uid="uid://cp71xybl0b4g0"]
+[gd_scene load_steps=9 format=3 uid="uid://cp71xybl0b4g0"]
 
 [ext_resource type="Script" path="res://content/characters/kara.gd" id="1_dfbsc"]
 [ext_resource type="Texture2D" uid="uid://n3p23smlbm2d" path="res://content/characters/kara.png" id="1_p007o"]
 [ext_resource type="Script" path="res://content/interactions/bump.gd" id="2_k3sc1"]
 [ext_resource type="Script" path="res://content/interactions/modulate.gd" id="3_3a4o7"]
-[ext_resource type="Animation" uid="uid://dugnf0cml8oek" path="res://content/interactions/modulate.res" id="5_kru6o"]
-[ext_resource type="Animation" uid="uid://g2n4tpy47lmr" path="res://content/interactions/modulate_backwards.res" id="6_cjhf4"]
+[ext_resource type="BitMap" uid="uid://rkudxqlykp4q" path="res://content/characters/kara_mask.png" id="5_145do"]
+[ext_resource type="Script" path="res://content/interactions/area.gd" id="5_sgcc0"]
 
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_5gp17"]
-radius = 8.0
-height = 34.0
-
-[sub_resource type="Animation" id="Animation_hhoak"]
+[sub_resource type="Animation" id="Animation_3fwqj"]
 resource_name = "bump"
 length = 0.4
 tracks/0/type = "bezier"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("content:position:y")
+tracks/0/path = NodePath("content:offset:y")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
 "handle_modes": PackedInt32Array(0, 0),
-"points": PackedFloat32Array(-14, -0.25, 0, 0.25, 0, -19, -0.35, -5.25, 0.25, 0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0, -5, -0.2, -7.94678, 0.25, 0),
 "times": PackedFloat32Array(0, 0.4)
-}
-
-[sub_resource type="Animation" id="Animation_uvlpl"]
-resource_name = "bump_backwards"
-length = 0.3
-tracks/0/type = "bezier"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("content:position:y")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"handle_modes": PackedInt32Array(0, 0),
-"points": PackedFloat32Array(-19, 0, 0, 0.25, 0, -14, -0.25, 0, 0, 0),
-"times": PackedFloat32Array(0, 0.3)
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_uha3x"]
 _data = {
-"bump": SubResource("Animation_hhoak"),
-"bump_backwards": SubResource("Animation_uvlpl"),
-"modulate": ExtResource("5_kru6o"),
-"modulate_backwards": ExtResource("6_cjhf4")
+"bump": SubResource("Animation_3fwqj")
 }
 
 [node name="kara" type="Node2D" groups=["characters"]]
@@ -61,20 +39,24 @@ script = ExtResource("2_k3sc1")
 [node name="modulate" type="Node" parent="interactions"]
 script = ExtResource("3_3a4o7")
 
-[node name="content" type="Node2D" parent="."]
-position = Vector2(2, -14.9175)
-
-[node name="sprite" type="Sprite2D" parent="content"]
-modulate = Color(1.00399, 1.00399, 1.00399, 1)
+[node name="content" type="Sprite2D" parent="."]
 texture_filter = 1
+position = Vector2(2, -14)
 texture = ExtResource("1_p007o")
 
-[node name="area" type="Area2D" parent="content"]
-
-[node name="shape" type="CollisionShape2D" parent="content/area"]
-visible = false
-position = Vector2(-1, 0)
-shape = SubResource("CapsuleShape2D_5gp17")
+[node name="button" type="TextureButton" parent="content"]
+texture_filter = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -16.0
+offset_top = -34.0
+grow_horizontal = 2
+grow_vertical = 2
+texture_click_mask = ExtResource("5_145do")
+script = ExtResource("5_sgcc0")
 
 [node name="animation" type="AnimationPlayer" parent="content"]
 root_node = NodePath("../..")
@@ -82,6 +64,6 @@ libraries = {
 "": SubResource("AnimationLibrary_uha3x")
 }
 
-[connection signal="input_event" from="content/area" to="." method="_input_event"]
-[connection signal="mouse_entered" from="content/area" to="." method="_mouse_entered"]
-[connection signal="mouse_exited" from="content/area" to="." method="_mouse_exited"]
+[connection signal="button_down" from="content/button" to="content/button" method="_button_down"]
+[connection signal="mouse_entered" from="content/button" to="content/button" method="_mouse_entered"]
+[connection signal="mouse_exited" from="content/button" to="content/button" method="_mouse_exited"]

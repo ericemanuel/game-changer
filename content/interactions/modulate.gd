@@ -1,14 +1,18 @@
 extends Node
 
 var state: bool = false
-@onready var animation = $"../../content/animation"
+@onready var root: Node = $'../../'
 
-func modulate():
-	match state:
-		false:
-			animation.queue('modulate')
-			state = true
+func _ready():
+	messenger.connect('modulate', modulate)
 
-		true:
-			animation.queue('modulate_backwards')
-			state = false
+func modulate(node):
+	if node == root:
+		match state:
+			false:
+				root.modulate = Color(1.2, 1.2, 1.2)
+				state = true
+
+			true:
+				root.modulate = Color(1,1,1)
+				state = false

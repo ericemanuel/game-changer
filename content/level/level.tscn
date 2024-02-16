@@ -30,4 +30,4 @@ position = Vector2(100, 180)
 
 [node name="kara" parent="characters" groups=["allies"] instance=ExtResource("3_mn4fv")]
 position = Vector2(100, 139)
-coordinates = Vector2(6, 1)
+coordinates = Vector2(5, 1)

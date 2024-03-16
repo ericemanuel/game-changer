@@ -1,6 +1,8 @@
 extends Node2D
 
 var coordinates: Vector2
+var movement_cost: int = 1
+
 
 func _ready():
 	@warning_ignore("integer_division")

@@ -1,12 +1,13 @@
 [gd_scene load_steps=6 format=3 uid="uid://df1b2c1iealb3"]
 
+[ext_resource type="Script" path="res://content/services/events.gd" id="1_7xka1"]
+[ext_resource type="Script" path="res://content/level/level.gd" id="1_rikxq"]
 [ext_resource type="Script" path="res://content/services/navigation.gd" id="2_teokd"]
 [ext_resource type="PackedScene" uid="uid://dyt665n50ythe" path="res://content/board/board.tscn" id="2_ui23l"]
-[ext_resource type="Script" path="res://content/services/range.gd" id="2_vhlbi"]
-[ext_resource type="Script" path="res://content/services/motion.gd" id="3_4qshd"]
 [ext_resource type="PackedScene" uid="uid://cp71xybl0b4g0" path="res://content/characters/kara.tscn" id="3_mn4fv"]
 
 [node name="level" type="Node"]
+script = ExtResource("1_rikxq")
 
 [node name="services" type="Node" parent="."]
 
@@ -15,11 +16,8 @@
 [node name="navigation" type="Node" parent="services"]
 script = ExtResource("2_teokd")
 
-[node name="range" type="Node" parent="services/navigation"]
-script = ExtResource("2_vhlbi")
-
-[node name="motion" type="Node" parent="services/navigation"]
-script = ExtResource("3_4qshd")
+[node name="filter" type="Node" parent="services/navigation"]
+script = ExtResource("1_7xka1")
 
 [node name="board" parent="." instance=ExtResource("2_ui23l")]
 position = Vector2(100, 180)

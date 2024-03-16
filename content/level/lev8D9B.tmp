@@ -1,8 +1,7 @@
-[gd_scene load_steps=6 format=3 uid="uid://df1b2c1iealb3"]
+[gd_scene load_steps=5 format=3 uid="uid://df1b2c1iealb3"]
 
 [ext_resource type="Script" path="res://content/services/navigation.gd" id="2_teokd"]
 [ext_resource type="PackedScene" uid="uid://dyt665n50ythe" path="res://content/board/board.tscn" id="2_ui23l"]
-[ext_resource type="Script" path="res://content/services/range.gd" id="2_vhlbi"]
 [ext_resource type="Script" path="res://content/services/motion.gd" id="3_4qshd"]
 [ext_resource type="PackedScene" uid="uid://cp71xybl0b4g0" path="res://content/characters/kara.tscn" id="3_mn4fv"]
 
@@ -16,7 +15,6 @@
 script = ExtResource("2_teokd")
 
 [node name="range" type="Node" parent="services/navigation"]
-script = ExtResource("2_vhlbi")
 
 [node name="motion" type="Node" parent="services/navigation"]
 script = ExtResource("3_4qshd")

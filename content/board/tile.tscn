@@ -1,9 +1,10 @@
-[gd_scene load_steps=9 format=3 uid="uid://chrwrc557xa21"]
+[gd_scene load_steps=10 format=3 uid="uid://chrwrc557xa21"]
 
 [ext_resource type="Texture2D" uid="uid://cgkysixgk7dua" path="res://content/board/tile.png" id="1_gb1li"]
 [ext_resource type="Script" path="res://content/board/tile.gd" id="1_htkve"]
 [ext_resource type="Script" path="res://content/reactions/bump.gd" id="2_rhb7g"]
 [ext_resource type="Script" path="res://content/reactions/modulate.gd" id="3_4v547"]
+[ext_resource type="Texture2D" uid="uid://2lrpxkph1df7" path="res://content/board/highlight.png" id="5_1lffy"]
 [ext_resource type="BitMap" uid="uid://bvvacn5a4wrbl" path="res://content/board/tile_mask.png" id="5_8mpy5"]
 [ext_resource type="Script" path="res://content/reactions/button.gd" id="6_58oe7"]
 
@@ -44,6 +45,11 @@ position = Vector2(0, 8)
 
 [node name="sprite" type="Sprite2D" parent="body"]
 texture = ExtResource("1_gb1li")
+
+[node name="highlight" type="Sprite2D" parent="body"]
+visible = false
+position = Vector2(0, -8.5)
+texture = ExtResource("5_1lffy")
 
 [node name="button" type="TextureButton" parent="body"]
 texture_filter = 1

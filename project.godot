@@ -17,10 +17,9 @@ config/icon="res://icon.svg"
 
 [autoload]
 
-interactions="*res://content/global/interactions.gd"
-events="*res://content/global/events.gd"
-states="*res://content/global/states.gd"
-feedbacks="*res://content/global/feedbacks.gd"
+hardware="*res://content/global/hardware.gd"
+dispatcher="*res://content/global/dispatcher.gd"
+event="*res://content/global/event.gd"
 
 [display]
 

@@ -13,6 +13,7 @@ position = Vector2(40, 20)
 
 [node name="tile01" parent="content" instance=ExtResource("1_truwu")]
 position = Vector2(56, 28)
+movement_cost = 10
 
 [node name="tile02" parent="content" instance=ExtResource("1_truwu")]
 position = Vector2(72, 36)
@@ -31,6 +32,7 @@ position = Vector2(24, 28)
 
 [node name="tile07" parent="content" instance=ExtResource("1_truwu")]
 position = Vector2(40, 36)
+movement_cost = 10
 
 [node name="tile08" parent="content" instance=ExtResource("1_truwu")]
 position = Vector2(56, 44)

@@ -1,7 +1,7 @@
 extends Node2D
 
 @export var coordinates: Vector2
-@export var movement_points: int = 4
+@export var movement_points: int = 3
 
 
 func _ready():

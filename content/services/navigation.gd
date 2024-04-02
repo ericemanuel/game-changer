@@ -1,47 +1,43 @@
 extends Node
 
-@onready var movement_range: Node = $range
-@onready var motion: Node = $motion
-
-enum {idle,
-	  tile_selected,
-	  character_selected,
-	  character_moving,
-	  character_moved}
-
-var state: int = idle
-var character: Node
-var tile: Node
+var astar: AStarGrid2D = AStarGrid2D.new()
 
 
 func _ready():
-	events.tile_selected.connect     (state_machine.bind(tile_selected))
-	events.character_selected.connect(state_machine.bind(character_selected))
-	feedbacks.character_moved.connect(state_machine.bind(character_moved))
+	astar.region = Rect2i(1, 1, 6, 6)
+	astar.diagonal_mode = AStarGrid2D.DIAGONAL_MODE_NEVER
+	astar.update()
 
 
-func state_machine(node, caller):
-	match state:
-		idle:
-			match caller:
-				character_selected:
-					character = node
-					movement_range.show(character)
-					state = character_selected
+func get_range(character) -> Array:
+	reset()
 
-		character_selected:
-			match caller:
-				tile_selected:
-					if node.coordinates != character.coordinates:
-						tile = node
-						motion.start(character, tile)
-						state = character_moving
-						states.character_moving.emit(character)
+	@warning_ignore("shadowed_global_identifier")
+	var range: Array = []
 
-				character_selected:
-					state = idle
+	for tile in get_tree().get_nodes_in_group('tiles'):
+		var path: Array = astar.get_point_path(character.coordinates, tile.coordinates)
+		var path_weight: float = -astar.get_point_weight_scale(character.coordinates)
 
-		character_moving:
-			match caller:
-				character_moved:
-					state = idle
+		for point in path:
+			path_weight += astar.get_point_weight_scale(point)
+
+		if path_weight <= character.movement_points:
+			range.append(tile)
+
+	return range
+
+
+func get_point_path(character, tile) -> Array:
+	reset()
+
+	return astar.get_point_path(character.coordinates, tile.coordinates)
+
+
+func reset():
+	for tile in get_tree().get_nodes_in_group('tiles'):
+		astar.set_point_solid(tile.coordinates, false)
+		astar.set_point_weight_scale(tile.coordinates, tile.movement_cost)
+
+	for character in get_tree().get_nodes_in_group('characters'):
+		astar.set_point_solid(character.coordinates, true)

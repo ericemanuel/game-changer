@@ -2,18 +2,47 @@ extends Node
 
 @onready var root: Node = $'../../'
 
+enum {idle,
+	  entered,
+	  exited,
+	  focused,
+	  unfocused,
+	  character_moved}
+
+var state: int = idle
+
 
 func _ready():
-	events.tile_entered.connect     (modulate)
-	events.character_entered.connect(modulate)
-	events.tile_exited.connect      (unmodulate)
-	events.character_exited.connect (unmodulate)
+	event.tile_entered.connect     (state_machine.bind(entered))
+	event.tile_exited.connect      (state_machine.bind(exited))
+	event.tile_focused.connect    (state_machine.bind(focused))
+	event.tile_unfocused.connect    (state_machine.bind(unfocused))
+	event.character_entered.connect(state_machine.bind(entered))
+	event.character_exited.connect (state_machine.bind(exited))
+	event.character_moved.connect  (state_machine.bind(character_moved))
 
 
-func modulate(node):
-	if node == root:
-		root.modulate = Color(1.2, 1.2, 1.2)
+func state_machine(object, caller):
+	if object == root:
+		match state:
+			idle:
+				match caller:
+					entered:
+						root.modulate = Color(1.2, 1.2, 1.2)
+						state = entered
 
-func unmodulate(node):
-	if node == root:
-		root.modulate = Color(1,1,1)
+					focused:
+						root.modulate = Color(1.2, 1.2, 1.2)
+						state = focused
+
+			entered:
+				match caller:
+					exited:
+						root.modulate = Color(1,1,1)
+						state = idle
+
+			focused:
+				match caller:
+					unfocused:
+						root.modulate = Color(1,1,1)
+						state = idle

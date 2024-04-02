@@ -14,16 +14,16 @@ var state: int = idle
 
 
 func _ready():
-	events.tile_selected.connect     (state_machine.bind(selected))
-	events.character_selected.connect(state_machine.bind(selected))
-	states.character_moving.connect  (state_machine.bind(character_moving))
-	feedbacks.character_moved.connect(state_machine.bind(character_moved))
+	event.tile_selected.connect     (state_machine.bind(selected))
+	event.character_selected.connect(state_machine.bind(selected))
+	event.character_moving.connect  (state_machine.bind(character_moving))
+	event.character_moved.connect   (state_machine.bind(character_moved))
 
 
-func state_machine(node, caller):
+func state_machine(object, caller):
 	match caller:
 		selected:
-			if node == root:
+			if object == root:
 				match state:
 					idle:
 						animation.queue('bump')
@@ -33,7 +33,7 @@ func state_machine(node, caller):
 						animation.play_backwards('bump')
 						state = idle
 
-			elif node.coordinates != root.coordinates:
+			elif object.coordinates != root.coordinates:
 				match state:
 					bumped:
 						animation.play_backwards('bump')

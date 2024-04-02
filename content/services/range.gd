@@ -1,21 +1,40 @@
 extends Node
 
+@onready var graph = $".."
+
+
 enum {idle,
-	  character_selected}
+	  character_selected,
+	  character_moving,
+	  character_moved}
 
 var state: int = idle
-var movement_points: int
-var possible_moves: Array
 
 
-func show(character):
-	movement_points = character.movement_points
-	
-	for i in range(1, movement_points):
-		for tile in get_tree().get_nodes_in_group('tiles'):
-			if tile.coordinates == Vector2(character.coordinates.x + i, character.coordinates.y):
-				if movement_points >= tile.movement_cost:
-					movement_points = movement_points - tile.movement_cost
-					possible_moves.append(tile)
+func _ready():
+	event.character_selected.connect(state_machine.bind(character_selected))
+	event.idle.connect              (state_machine.bind(idle))
+	event.character_moving.connect  (state_machine.bind(character_moving))
 
-				break
+
+func state_machine(character, caller):
+	match state:
+		idle:
+			match caller:
+				character_selected:
+					show_range(character)
+					state = character_selected
+
+		character_selected:
+			reset()
+			state = idle
+
+
+func show_range(character):
+	for tile in graph.get_range(character):
+		event.tile_focused.emit(tile)
+
+
+func reset():
+	for tile in get_tree().get_nodes_in_group('tiles'):
+		event.tile_unfocused.emit(tile)

@@ -1,7 +1,7 @@
 extends Node
 
-@onready var root: Node = $'../../'
-@onready var animation: AnimationPlayer = $"../../body/animation"
+@onready var root: Node = $'../..'
+@onready var animation: AnimationPlayer = $"../../visuals/animation"
 
 enum {idle,
 	  selected,

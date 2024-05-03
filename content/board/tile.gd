@@ -1,7 +1,9 @@
 extends Node2D
 
+@onready var visuals: Node = $visuals
+
 var coordinates: Vector2
-@export var movement_cost: int = 1
+@export var weight: int = 1
 
 
 func _ready():

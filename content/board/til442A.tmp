@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://chrwrc557xa21"]
+[gd_scene load_steps=11 format=3 uid="uid://chrwrc557xa21"]
 
 [ext_resource type="Texture2D" uid="uid://cgkysixgk7dua" path="res://content/board/tile.png" id="1_gb1li"]
 [ext_resource type="Script" path="res://content/board/tile.gd" id="1_htkve"]
@@ -9,27 +9,13 @@
 [ext_resource type="BitMap" uid="uid://bvvacn5a4wrbl" path="res://content/board/tile_mask.png" id="5_8mpy5"]
 [ext_resource type="Script" path="res://content/reactions/button.gd" id="6_58oe7"]
 
-[sub_resource type="Animation" id="Animation_wba76"]
-length = 0.001
-tracks/0/type = "bezier"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("visuals/sprites:position:y")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(3, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0)
-}
-
 [sub_resource type="Animation" id="Animation_d3iyh"]
 resource_name = "bump"
 length = 0.3
 tracks/0/type = "bezier"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("visuals/sprites:position:y")
+tracks/0/path = NodePath("body:position:y")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -40,7 +26,6 @@ tracks/0/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_4pvwk"]
 _data = {
-"RESET": SubResource("Animation_wba76"),
 "bump": SubResource("Animation_d3iyh")
 }
 
@@ -58,45 +43,43 @@ script = ExtResource("3_qoy6w")
 [node name="modulate" type="Node" parent="reactions"]
 script = ExtResource("3_4v547")
 
-[node name="visuals" type="Node2D" parent="."]
+[node name="body" type="Node2D" parent="."]
 texture_filter = 1
-
-[node name="sprites" type="Node2D" parent="visuals"]
 position = Vector2(0, 8)
 
-[node name="body" type="Sprite2D" parent="visuals/sprites"]
+[node name="sprite" type="Sprite2D" parent="body"]
 texture = ExtResource("1_gb1li")
 
-[node name="highlight" type="Sprite2D" parent="visuals/sprites"]
+[node name="highlight" type="Sprite2D" parent="body"]
 visible = false
-z_index = 2
+z_index = 1
 position = Vector2(0, -8.5)
 texture = ExtResource("5_1lffy")
 
-[node name="animation" type="AnimationPlayer" parent="visuals"]
-reset_on_save = false
-root_node = NodePath("../..")
-libraries = {
-"": SubResource("AnimationLibrary_4pvwk")
-}
-
-[node name="button" type="TextureButton" parent="."]
+[node name="button" type="TextureButton" parent="body"]
 texture_filter = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -15.5
-offset_top = -13.5
-offset_right = 16.5
-offset_bottom = 20.5
+offset_left = -16.0
+offset_top = -17.0
+offset_right = 16.0
+offset_bottom = 17.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 4
 texture_click_mask = ExtResource("5_8mpy5")
 script = ExtResource("6_58oe7")
 
-[connection signal="button_down" from="button" to="button" method="_button_down"]
-[connection signal="mouse_entered" from="button" to="button" method="_mouse_entered"]
-[connection signal="mouse_exited" from="button" to="button" method="_mouse_exited"]
+[node name="animation" type="AnimationPlayer" parent="body"]
+reset_on_save = false
+root_node = NodePath("../..")
+libraries = {
+"": SubResource("AnimationLibrary_4pvwk")
+}
+
+[connection signal="button_down" from="body/button" to="body/button" method="_button_down"]
+[connection signal="mouse_entered" from="body/button" to="body/button" method="_mouse_entered"]
+[connection signal="mouse_exited" from="body/button" to="body/button" method="_mouse_exited"]

@@ -1,6 +1,6 @@
 extends TextureButton
 
-@onready var root: Node = $'../../'
+@onready var root: Node = $'..'
 
 
 func _button_down():

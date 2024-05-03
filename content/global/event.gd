@@ -13,5 +13,7 @@ signal character_entered
 signal character_exited
 signal character_selected
 
+signal character_focused
+signal character_unfocused
 signal character_moving
 signal character_moved

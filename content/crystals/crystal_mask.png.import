@@ -1,0 +1,16 @@
+[remap]
+
+importer="bitmap"
+type="BitMap"
+uid="uid://b5wdt5qr54yyd"
+path="res://.godot/imported/crystal_mask.png-7fdf2fed940925895004ccc2c48292db.res"
+
+[deps]
+
+source_file="res://content/crystals/crystal_mask.png"
+dest_files=["res://.godot/imported/crystal_mask.png-7fdf2fed940925895004ccc2c48292db.res"]
+
+[params]
+
+create_from=1
+threshold=0.5

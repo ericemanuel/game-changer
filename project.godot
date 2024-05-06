@@ -13,7 +13,7 @@ config_version=5
 config/name="Game Changer"
 run/main_scene="res://content/level/level.tscn"
 config/features=PackedStringArray("4.2", "Mobile")
-config/icon="res://icon.svg"
+config/icon="res://icon.png"
 
 [autoload]
 
@@ -30,6 +30,10 @@ window/size/window_height_override=900
 window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
 window/handheld/orientation=1
+
+[filesystem]
+
+import/blender/enabled=false
 
 [input]
 

@@ -49,3 +49,5 @@ func reset():
 
 	for character in get_tree().get_nodes_in_group('characters'):
 		astar.set_point_solid(character.coordinates, true)
+	for crystal in get_tree().get_nodes_in_group('crystals'):
+		astar.set_point_solid(crystal.coordinates, true)

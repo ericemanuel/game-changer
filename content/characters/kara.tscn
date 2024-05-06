@@ -18,7 +18,7 @@ tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
 "handle_modes": PackedInt32Array(0, 0),
-"points": PackedFloat32Array(-16, -0.25, 0, 0.25, 0, -21, -0.25, -5, 0, 0),
+"points": PackedFloat32Array(-15, 0, 0, 0.25, 0, -20, -0.25, -5, 0, 0),
 "times": PackedFloat32Array(0, 0.4)
 }
 
@@ -41,7 +41,7 @@ script = ExtResource("3_jgxeg")
 
 [node name="visuals" type="Node2D" parent="."]
 texture_filter = 1
-position = Vector2(2, -16)
+position = Vector2(3, -15)
 
 [node name="sprite" type="Sprite2D" parent="visuals"]
 texture = ExtResource("1_p007o")

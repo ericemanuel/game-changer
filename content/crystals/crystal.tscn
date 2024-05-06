@@ -1,0 +1,203 @@
+[gd_scene load_steps=13 format=3 uid="uid://ce43iyxx4njh6"]
+
+[ext_resource type="Script" path="res://content/crystals/crystal.gd" id="1_o2ifk"]
+[ext_resource type="Texture2D" uid="uid://6wr3psmv5bko" path="res://content/crystals/crystal.png" id="1_xrs2g"]
+[ext_resource type="Script" path="res://content/crystals/destroy.gd" id="2_41aa2"]
+[ext_resource type="BitMap" uid="uid://b5wdt5qr54yyd" path="res://content/crystals/crystal_mask.png" id="2_bapho"]
+[ext_resource type="Script" path="res://content/reactions/bump.gd" id="3_u2g1i"]
+[ext_resource type="Script" path="res://content/reactions/button.gd" id="6_176ip"]
+
+[sub_resource type="Animation" id="Animation_a36pm"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+tracks/1/type = "bezier"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("sprite:position:y")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("sprite:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+tracks/3/type = "bezier"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath(".:position:y")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(-12, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+
+[sub_resource type="Animation" id="Animation_sjx1n"]
+resource_name = "break"
+length = 0.4
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.3, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [7, 8, 9, 10]
+}
+
+[sub_resource type="Animation" id="Animation_h6lit"]
+resource_name = "bump"
+length = 0.4
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position:y")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0, 0),
+"points": PackedFloat32Array(-12, 0, 0, 0.25, 0, -17, -0.25, -5, 0, 0),
+"times": PackedFloat32Array(0, 0.4)
+}
+
+[sub_resource type="Animation" id="Animation_xns0r"]
+resource_name = "drop"
+length = 0.6
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [10, 11, 12, 13]
+}
+tracks/1/type = "bezier"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("sprite:position:y")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"handle_modes": PackedInt32Array(0, 0),
+"points": PackedFloat32Array(0, 0, 0, 0.5, 0, 20, 0, 0, 0, 0),
+"times": PackedFloat32Array(0, 0.6)
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("sprite:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0.3, 0.6),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_nyj2j"]
+resource_name = "idle"
+length = 0.8
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_3dywp"]
+_data = {
+"RESET": SubResource("Animation_a36pm"),
+"break": SubResource("Animation_sjx1n"),
+"bump": SubResource("Animation_h6lit"),
+"drop": SubResource("Animation_xns0r"),
+"idle": SubResource("Animation_nyj2j")
+}
+
+[node name="crystal" type="Node2D" groups=["crystals"]]
+z_index = 1
+script = ExtResource("1_o2ifk")
+
+[node name="reactions" type="Node" parent="."]
+
+[node name="destroy" type="Node" parent="reactions"]
+script = ExtResource("2_41aa2")
+
+[node name="bump" type="Node" parent="reactions"]
+script = ExtResource("3_u2g1i")
+
+[node name="visuals" type="Node2D" parent="."]
+texture_filter = 1
+position = Vector2(0, -12)
+
+[node name="sprite" type="Sprite2D" parent="visuals"]
+texture = ExtResource("1_xrs2g")
+hframes = 7
+vframes = 2
+region_enabled = true
+region_rect = Rect2(0, 0, 224, 64)
+
+[node name="animation" type="AnimationPlayer" parent="visuals"]
+libraries = {
+"": SubResource("AnimationLibrary_3dywp")
+}
+autoplay = "idle"
+
+[node name="button" type="TextureButton" parent="."]
+texture_filter = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -6.0
+offset_top = -22.0
+offset_right = 6.0
+offset_bottom = -1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture_click_mask = ExtResource("2_bapho")
+script = ExtResource("6_176ip")
+
+[connection signal="animation_finished" from="visuals/animation" to="reactions/destroy" method="_animation_finished"]
+[connection signal="button_down" from="button" to="button" method="_button_down"]
+[connection signal="mouse_entered" from="button" to="button" method="_mouse_entered"]
+[connection signal="mouse_exited" from="button" to="button" method="_mouse_exited"]

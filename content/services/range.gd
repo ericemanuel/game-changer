@@ -1,7 +1,6 @@
 extends Node
 
-@onready var graph = $".."
-
+@onready var navigation = $".."
 
 enum {idle,
 	  character_selected,
@@ -31,7 +30,7 @@ func state_machine(character, caller):
 
 
 func show_range(character):
-	for tile in graph.get_range(character):
+	for tile in navigation.get_range(character):
 		event.tile_focused.emit(tile)
 
 

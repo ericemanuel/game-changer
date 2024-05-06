@@ -6,7 +6,9 @@ enum {idle,
 	  entered,
 	  exited,
 	  focused,
-	  unfocused}
+	  unfocused,
+	  targeted,
+	  untargeted}
 
 var state: int = idle
 
@@ -16,6 +18,8 @@ func _ready():
 	event.tile_exited.connect        (state_machine.bind(exited))
 	event.tile_focused.connect       (state_machine.bind(focused))
 	event.tile_unfocused.connect     (state_machine.bind(unfocused))
+	event.tile_targeted.connect      (state_machine.bind(targeted))
+	event.tile_untargeted.connect    (state_machine.bind(untargeted))
 
 	event.character_entered.connect  (state_machine.bind(entered))
 	event.character_exited.connect   (state_machine.bind(exited))
@@ -31,21 +35,35 @@ func state_machine(object, caller):
 					entered:
 						for character in get_tree().get_nodes_in_group('characters'):
 							if character.coordinates == root.coordinates:
-								root.modulate = Color(1.2, 1.2, 1.2)
+								root.modulate = Color(1.15, 1.15, 1.15)
 								state = entered
 
 					focused:
-						root.modulate = Color(1.2, 1.2, 1.2)
+						root.modulate = Color(1.15, 1.15, 1.15)
 						state = focused
+
+					targeted:
+						root.modulate = Color(3, 1, 1)
+						state = targeted
 
 			entered:
 				match caller:
 					exited:
-						root.modulate = Color(1,1,1)
+						reset()
 						state = idle
 
 			focused:
 				match caller:
 					unfocused:
-						root.modulate = Color(1,1,1)
+						reset()
 						state = idle
+
+			targeted:
+				match caller:
+					untargeted:
+						reset()
+						state = idle
+
+
+func reset():
+	root.modulate = Color(1,1,1)

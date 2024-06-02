@@ -6,7 +6,6 @@ const SPEED: float = 1
 enum {idle,
 	  tile_selected,
 	  character_selected,
-	  crystal_destroyed,
 	  character_moving,
 	  character_moved}
 
@@ -21,7 +20,6 @@ var movement_counter: int = 0
 func _ready():
 	event.tile_selected.connect     (state_machine.bind(tile_selected))
 	event.character_selected.connect(state_machine.bind(character_selected))
-	event.crystal_destroyed.connect  (state_machine.bind(crystal_destroyed))
 
 
 func state_machine(object, caller):
@@ -96,12 +94,14 @@ func move_character():
 			movement_counter = 0
 
 	else:
-		next += 1
-		character.z_index = tile.z_index + 2
+		for tile in get_tree().get_nodes_in_group('tiles'):
+			if tile.coordinates == point:
+				character.z_index = tile.z_index + 2 #jogar esse controle para dentro do movimento
+				break
 
+		next += 1
 		if next == path.size():
 			next = 1
-			character.z_index = tile.z_index + 2
 
 			state = idle
 			event.character_moved.emit(character)

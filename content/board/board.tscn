@@ -138,7 +138,6 @@ z_index = 10
 position = Vector2(-80, 40)
 
 [node name="tile31" parent="content" instance=ExtResource("1_truwu")]
-visible = false
 z_index = 12
 position = Vector2(-64, 48)
 

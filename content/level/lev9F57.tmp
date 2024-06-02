@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://df1b2c1iealb3"]
+[gd_scene load_steps=11 format=3 uid="uid://df1b2c1iealb3"]
 
 [ext_resource type="Script" path="res://content/services/target.gd" id="1_iwpk3"]
 [ext_resource type="Script" path="res://content/services/battle.gd" id="1_nehni"]
@@ -8,6 +8,7 @@
 [ext_resource type="Script" path="res://content/services/motion.gd" id="3_4qshd"]
 [ext_resource type="PackedScene" uid="uid://cp71xybl0b4g0" path="res://content/characters/kara.tscn" id="3_mn4fv"]
 [ext_resource type="Script" path="res://content/services/push.gd" id="3_pldil"]
+[ext_resource type="Script" path="res://content/services/fall.gd" id="4_jv4jq"]
 [ext_resource type="PackedScene" uid="uid://ce43iyxx4njh6" path="res://content/crystals/crystal.tscn" id="6_yt4u2"]
 
 [node name="level" type="Node"]
@@ -22,6 +23,9 @@ script = ExtResource("1_iwpk3")
 
 [node name="push" type="Node" parent="services/battle"]
 script = ExtResource("3_pldil")
+
+[node name="fall" type="Node" parent="services/battle"]
+script = ExtResource("4_jv4jq")
 
 [node name="navigation" type="Node" parent="services"]
 script = ExtResource("2_teokd")

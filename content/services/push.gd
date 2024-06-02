@@ -47,10 +47,8 @@ func find_destination(crystal, character):
 			destination_coordinates.y = character.coordinates.y
 			break
 
-	for tile in get_tree().get_nodes_in_group('tiles'):
-		if tile.coordinates == destination_coordinates:
-			assign_values(character, tile, battle.get_point_path(character, tile))
-			state = character_moving
+	assign_values(character, tile, battle.get_point_path(character, destination_coordinates))
+	state = character_moving
 
 
 func assign_values(character_, tile_, path_):
@@ -105,12 +103,25 @@ func push_character():
 			movement_counter = 0
 
 	else:
-		next += 1
-		character.z_index = tile.z_index + 2
+		var on_chasm: bool = true
+		for tile in get_tree().get_nodes_in_group('tiles'):
+			if tile.coordinates == point:
+				character.z_index = tile.z_index + 2
+				on_chasm = false
+				break
 
-		if next == path.size():
+		if on_chasm:
 			next = 1
-			character.z_index = tile.z_index + 2
+			character.z_index += 2 #jogar esse controle para dentro do movimento
 
 			state = idle
-			event.character_moved.emit(character)
+			event.character_dropping.emit(character)
+
+		else:
+			next += 1
+
+			if next == path.size():
+				next = 1
+
+				state = idle
+				event.character_moved.emit(character)

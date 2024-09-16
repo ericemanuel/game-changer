@@ -11,7 +11,7 @@ enum {idle,
 
 var state: int = idle
 var character: Node
-var tile: Node
+var tile_: Node
 var path: Array
 var next: int = 1
 var movement_counter: int = 0
@@ -22,26 +22,25 @@ func _ready():
 	event.character_selected.connect(state_machine.bind(character_selected))
 
 
-func state_machine(object, caller):
+func state_machine(entity, caller):
 	match state:
 		idle:
 			match caller:
 				character_selected:
-					character = object
+					character = entity
 					state = character_selected
 
 		character_selected:
 			match caller:
 				tile_selected:
-					tile = object
-					if tile in navigation.get_range(character):
-						if tile.coordinates != character.coordinates:
-							path = navigation.get_point_path(character, tile)
+					tile_ = entity
+					if tile_ in navigation.get_range(character):
+						if tile_.coordinates != character.coordinates:
+							path = navigation.get_point_path(character, tile_)
 							event.character_moving.emit(character)
 							state = character_moving
 
 					else:
-						event.idle.emit(null)
 						state = idle
 
 				character_selected:

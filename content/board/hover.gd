@@ -15,8 +15,8 @@ func _ready():
 	event.tile_exited.connect (state_machine.bind(exited))
 
 
-func state_machine(tile, caller):
-	if tile == root:
+func state_machine(entity, caller):
+	if entity == root:
 		match state:
 			idle:
 				match caller:

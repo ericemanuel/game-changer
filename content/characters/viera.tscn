@@ -1,0 +1,132 @@
+[gd_scene load_steps=12 format=3 uid="uid://53nawwtynqlh"]
+
+[ext_resource type="Script" path="res://content/characters/character.gd" id="1_m847s"]
+[ext_resource type="Script" path="res://content/reactions/bump.gd" id="2_6lpty"]
+[ext_resource type="Script" path="res://content/services/drop.gd" id="3_k0fhv"]
+[ext_resource type="Script" path="res://content/reactions/modulate.gd" id="4_i371o"]
+[ext_resource type="Texture2D" uid="uid://cevuf4x1u5muo" path="res://content/characters/viera.png" id="5_7g3m5"]
+[ext_resource type="BitMap" uid="uid://d322ju4abq48o" path="res://content/characters/viera_mask.png" id="6_r0g3b"]
+[ext_resource type="Script" path="res://content/reactions/button.gd" id="7_5b5uy"]
+
+[sub_resource type="Animation" id="Animation_7pqo6"]
+length = 0.001
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position:y")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(-15, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_omohb"]
+resource_name = "bump"
+length = 0.4
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position:y")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0, 0),
+"points": PackedFloat32Array(-15, 0, 0, 0.25, 0, -20, -0.25, -5, 0, 0),
+"times": PackedFloat32Array(0, 0.4)
+}
+
+[sub_resource type="Animation" id="Animation_ud01j"]
+resource_name = "drop"
+length = 0.6
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position:y")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0, 0),
+"points": PackedFloat32Array(-15, 0, 0, 0.5, 0, 5, 0, 0, 0, 0),
+"times": PackedFloat32Array(0, 0.6)
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.3, 0.6),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_3dywp"]
+_data = {
+"RESET": SubResource("Animation_7pqo6"),
+"bump": SubResource("Animation_omohb"),
+"drop": SubResource("Animation_ud01j")
+}
+
+[node name="viera" type="Node2D" groups=["characters", "entities"]]
+z_index = 1
+script = ExtResource("1_m847s")
+
+[node name="reactions" type="Node" parent="."]
+
+[node name="bump" type="Node" parent="reactions"]
+script = ExtResource("2_6lpty")
+
+[node name="drop" type="Node" parent="reactions"]
+script = ExtResource("3_k0fhv")
+
+[node name="modulate" type="Node" parent="reactions"]
+script = ExtResource("4_i371o")
+
+[node name="visuals" type="Node2D" parent="."]
+texture_filter = 1
+position = Vector2(0, -15)
+
+[node name="sprite" type="Sprite2D" parent="visuals"]
+texture = ExtResource("5_7g3m5")
+
+[node name="animation" type="AnimationPlayer" parent="visuals"]
+libraries = {
+"": SubResource("AnimationLibrary_3dywp")
+}
+
+[node name="button" type="TextureButton" parent="."]
+texture_filter = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -16.0
+offset_top = -32.0
+offset_right = 16.0
+offset_bottom = 2.0
+grow_horizontal = 2
+grow_vertical = 2
+texture_click_mask = ExtResource("6_r0g3b")
+script = ExtResource("7_5b5uy")
+
+[connection signal="animation_finished" from="visuals/animation" to="reactions/drop" method="_animation_finished"]
+[connection signal="button_down" from="button" to="button" method="_button_down"]
+[connection signal="mouse_entered" from="button" to="button" method="_mouse_entered"]
+[connection signal="mouse_exited" from="button" to="button" method="_mouse_exited"]

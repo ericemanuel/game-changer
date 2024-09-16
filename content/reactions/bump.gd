@@ -4,6 +4,7 @@ extends Node
 @onready var player: AnimationPlayer = $"../../visuals/animation"
 
 enum {idle,
+	  lock,
 	  selected,
 	  character_moving,
 	  character_moved,
@@ -16,25 +17,25 @@ var state: int = idle
 func _ready():
 	event.tile_selected.connect     (state_machine.bind(selected))
 	event.character_selected.connect(state_machine.bind(selected))
-	#event.crystal_selected.connect (state_machine.bind(selected))
+	event.crystal_selected.connect  (state_machine.bind(selected))
 	event.character_moving.connect  (state_machine.bind(character_moving))
 	event.character_moved.connect   (state_machine.bind(character_moved))
 
 
-func state_machine(object, caller):
+func state_machine(entity, caller):
 	match caller:
 		selected:
-			if object == root:
+			if entity == root:
 				match state:
 					idle:
-						player.queue('bump')
+						player.play('bump')
 						state = bumped
 
 					bumped:
 						player.play_backwards('bump')
 						state = idle
 
-			elif object.coordinates != root.coordinates:
+			elif entity.coordinates != root.coordinates:
 				match state:
 					bumped:
 						player.play_backwards('bump')

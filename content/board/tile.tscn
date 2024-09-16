@@ -138,6 +138,7 @@ offset_bottom = 25.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 4
+button_mask = 3
 texture_click_mask = ExtResource("5_8mpy5")
 script = ExtResource("6_58oe7")
 

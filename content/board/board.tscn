@@ -10,7 +10,6 @@ position = Vector2(0, -40)
 [node name="tile00" parent="content" instance=ExtResource("1_truwu")]
 
 [node name="tile01" parent="content" instance=ExtResource("1_truwu")]
-visible = false
 z_index = 2
 position = Vector2(16, 8)
 
@@ -31,7 +30,6 @@ z_index = 10
 position = Vector2(80, 40)
 
 [node name="tile06" parent="content" instance=ExtResource("1_truwu")]
-visible = false
 z_index = 2
 position = Vector2(-16, 8)
 
@@ -52,7 +50,6 @@ z_index = 10
 position = Vector2(48, 40)
 
 [node name="tile11" parent="content" instance=ExtResource("1_truwu")]
-visible = false
 z_index = 12
 position = Vector2(64, 48)
 
@@ -73,7 +70,6 @@ z_index = 10
 position = Vector2(16, 40)
 
 [node name="tile16" parent="content" instance=ExtResource("1_truwu")]
-visible = false
 z_index = 12
 position = Vector2(32, 48)
 
@@ -82,12 +78,10 @@ z_index = 14
 position = Vector2(48, 56)
 
 [node name="tile18" parent="content" instance=ExtResource("1_truwu")]
-visible = false
 z_index = 6
 position = Vector2(-48, 24)
 
 [node name="tile19" parent="content" instance=ExtResource("1_truwu")]
-visible = false
 z_index = 8
 position = Vector2(-32, 32)
 
@@ -96,7 +90,6 @@ z_index = 10
 position = Vector2(-16, 40)
 
 [node name="tile21" parent="content" instance=ExtResource("1_truwu")]
-visible = false
 z_index = 12
 position = Vector2(0, 48)
 
@@ -129,7 +122,6 @@ z_index = 16
 position = Vector2(0, 64)
 
 [node name="tile29" parent="content" instance=ExtResource("1_truwu")]
-visible = false
 z_index = 18
 position = Vector2(16, 72)
 

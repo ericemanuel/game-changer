@@ -3,34 +3,56 @@ extends Node
 @onready var battle = $".."
 
 enum {idle,
-	  entered,
-	  exited}
+	  character_moved,
+	  crystal_entered,
+	  crystal_exited,
+	  crystal_created,
+	  crystal_broken}
 
 var state: int = idle
 
 
 func _ready():
-	event.crystal_entered.connect(state_machine.bind(entered))
-	event.crystal_exited.connect (state_machine.bind(exited))
+	event.character_moved.connect(state_machine.bind(character_moved))
+	event.crystal_entered.connect(state_machine.bind(crystal_entered))
+	event.crystal_exited.connect (state_machine.bind(crystal_exited))
+	event.crystal_created.connect(state_machine.bind(crystal_created))
+	event.crystal_broken.connect (state_machine.bind(crystal_broken))
 
 
-func state_machine(crystal, caller):
+func state_machine(entity, caller):
 	match state:
 		idle:
 			match caller:
-				entered:
-					show_range(crystal)
-					state = entered
+				character_moved:
+					show_range(entity)
+					state = character_moved
 
-		entered:
+				crystal_entered:
+					reset()
+					show_range(entity)
+					state = crystal_entered
+
+		character_moved:
 			match caller:
-				exited:
+				crystal_created:
 					reset()
 					state = idle
 
+		crystal_entered:
+			match caller:
+				crystal_exited:
+					reset()
+					state = idle
 
-func show_range(crystal):
-	for tile in battle.get_range(crystal):
+	match caller:
+		crystal_broken:
+			reset()
+			state = idle
+
+
+func show_range(entity):
+	for tile in battle.get_range(entity):
 		event.tile_targeted.emit(tile)
 
 

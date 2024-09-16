@@ -1,127 +1,182 @@
 extends Node
 
 @onready var battle = $".."
-const SPEED: float = 1
+const SPEED: float = .28
 
 enum {idle,
-	  character_moving}
+	  crystal_pushing}
 
 var state: int = idle
-var character: Node
-var tile: Node
-var path: Array
-var next: int = 1
+var Targets: Array
+var Destinations: Array
 var movement_counter: int = 0
+var target_counter: int = 0
+var pushed_entities: Array
 
 
 func _ready():
-	event.crystal_selected.connect(find_character)
+	event.crystal_alt_selected.connect(find_targets)
+	#event.entity_pushed.connect(is_crystal)
 
 
-func find_character(crystal):
-	for tile in battle.get_range(crystal):
-		for character in get_tree().get_nodes_in_group('characters'):
-			if character.coordinates == tile.coordinates:
-				find_destination(crystal, character)
-
-
-func find_destination(crystal, character):
-	var destination_coordinates: Vector2 = Vector2(0,0)
-
-	for i in range(1, crystal.power):
-		if character.coordinates.x == crystal.coordinates.x:
-			if character.coordinates.y > crystal.coordinates.y:
-				destination_coordinates.y = crystal.power + crystal.coordinates.y + 1
-			else:
-				destination_coordinates.y = -crystal.power + crystal.coordinates.y - 1
-
-			destination_coordinates.x = character.coordinates.x
+func is_crystal(entity):
+	for crystal in get_tree().get_nodes_in_group('crystals'):
+		if crystal == entity:
+			find_targets(crystal)
 			break
+
+
+func find_targets(crystal):
+	var targets: Array = []
+	battle.reset() #rever essa linha
+
+	for tile in battle.get_range(crystal):
+		for entity in get_tree().get_nodes_in_group('entities'):
+			if entity.coordinates == tile.coordinates and entity != crystal:
+				targets.append(entity)
+
+	arrange_targets(crystal, targets)
+
+
+func arrange_targets(crystal, targets):
+	var arrangement: Array = []
+
+	for reach in range(crystal.reach, 0, -1):
+		for target in targets:
+			if abs(target.coordinates.x - crystal.coordinates.x) == reach or \
+			   abs(target.coordinates.y - crystal.coordinates.y) == reach:
+				arrangement.append(target)
+
+	calculate_destinations(crystal, arrangement)
+
+
+func calculate_destinations(crystal, targets):
+	var destinations: Array = []
+	var destination: Vector2 = Vector2()
+
+	for target in targets:
+		if target.coordinates.x == crystal.coordinates.x:
+			destination.y = crystal.coordinates.y + crystal.reach                \
+							* sign(target.coordinates.y - crystal.coordinates.y) \
+							+ sign(target.coordinates.y - crystal.coordinates.y)
+			destination.x = target.coordinates.x
 
 		else:
-			if character.coordinates.x > crystal.coordinates.x:
-				destination_coordinates.x = crystal.power + crystal.coordinates.x + 1
+			destination.x = crystal.coordinates.x + crystal.reach                \
+							* sign(target.coordinates.x - crystal.coordinates.x) \
+							+ sign(target.coordinates.x - crystal.coordinates.x)
+			destination.y = target.coordinates.y
+
+		for check in range(crystal.reach):
+			if not battle.is_solid(destination):
+				if not is_chasm(destination):
+					battle.set_solid(destination, true)
+				battle.set_solid(target.coordinates, false)
+				break
+
 			else:
-				destination_coordinates.x = -crystal.power + crystal.coordinates.x - 1
+				destination.x += sign(target.coordinates.x - destination.x)
+				destination.y += sign(target.coordinates.y - destination.y)
 
-			destination_coordinates.y = character.coordinates.y
-			break
+		destinations.append(destination)
 
-	assign_values(character, tile, battle.get_point_path(character, destination_coordinates))
-	state = character_moving
+	if destinations.size() > 0:
+		state = crystal_pushing
+		set_values(targets, destinations)
+	else:
+		reset()
 
 
-func assign_values(character_, tile_, path_):
-	character = character_
-	tile = tile_
-	path = path_
+func set_values(targets, destinations):
+	Targets = targets
+	Destinations = destinations
 
 
 func _physics_process(_delta):
 	match state:
-		character_moving:
-			push_character()
+		crystal_pushing:
+			push_targets()
 
 
-func push_character():
-	var point: Vector2 = path[next]
+func push_targets():
+	if is_index_valid(Targets, target_counter):
+		if Targets[target_counter] != null:
+			var target: Node = Targets[target_counter]
+			var destination: Vector2 = Destinations[target_counter]
 
-	if character.coordinates.x < point.x:
-		if movement_counter < (8 / SPEED):
-			character.position.x += 2 * SPEED
-			character.position.y += 1 * SPEED
-			movement_counter += 1
-		else:
-			character.coordinates.x += 1
-			movement_counter = 0
+			if target.coordinates.x < destination.x:
+				if movement_counter < (8 / SPEED):
+					target.position.x += 2 * SPEED
+					target.position.y += 1 * SPEED
+					movement_counter += 1
+				else:
+					target.coordinates.x += 1
+					target.z_index += 2
+					movement_counter = 0
 
-	elif character.coordinates.x > point.x:
-		if movement_counter < (8 / SPEED):
-			character.position.x -= 2 * SPEED
-			character.position.y -= 1 * SPEED
-			movement_counter += 1
-		else:
-			character.coordinates.x -= 1
-			movement_counter = 0
+			elif target.coordinates.x > destination.x:
+				if movement_counter < (8 / SPEED):
+					target.position.x -= 2 * SPEED
+					target.position.y -= 1 * SPEED
+					movement_counter += 1
+				else:
+					target.coordinates.x -= 1
+					target.z_index -= 2
+					movement_counter = 0
 
-	elif character.coordinates.y < point.y:
-		if movement_counter < (8 / SPEED):
-			character.position.x -= 2 * SPEED
-			character.position.y += 1 * SPEED
-			movement_counter += 1
-		else:
-			character.coordinates.y += 1
-			movement_counter = 0
+			elif target.coordinates.y < destination.y:
+				if movement_counter < (8 / SPEED):
+					target.position.x -= 2 * SPEED
+					target.position.y += 1 * SPEED
+					movement_counter += 1
+				else:
+					target.coordinates.y += 1
+					target.z_index += 2
+					movement_counter = 0
 
-	elif character.coordinates.y > point.y:
-		if movement_counter < (8 / SPEED):
-			character.position.x += 2 * SPEED
-			character.position.y -= 1 * SPEED
-			movement_counter += 1
-		else:
-			character.coordinates.y -= 1
-			movement_counter = 0
+			elif target.coordinates.y > destination.y:
+				if movement_counter < (8 / SPEED):
+					target.position.x += 2 * SPEED
+					target.position.y -= 1 * SPEED
+					movement_counter += 1
+				else:
+					target.coordinates.y -= 1
+					target.z_index -= 2
+					movement_counter = 0
+
+			else:
+				target_counter += 1
+				pushed_entities.append(target)
+				event.entity_pushed.emit(target)
+
+			if is_chasm(target.coordinates):
+				event.entity_dropping.emit(target)
+				target_counter += 1
+
+			if target_counter >= Targets.size():
+				reset()
+				state = idle
+
+				for entity in pushed_entities:
+					is_crystal(entity)
 
 	else:
-		var on_chasm: bool = true
-		for tile in get_tree().get_nodes_in_group('tiles'):
-			if tile.coordinates == point:
-				character.z_index = tile.z_index + 2
-				on_chasm = false
-				break
+		target_counter = 0
 
-		if on_chasm:
-			next = 1
-			character.z_index += 2 #jogar esse controle para dentro do movimento
 
-			state = idle
-			event.character_dropping.emit(character)
+func is_index_valid(array, index) -> bool:
+	return index >= 0 && index < array.size()
 
-		else:
-			next += 1
 
-			if next == path.size():
-				next = 1
+func is_chasm(coordinates) -> bool:
+	for tile in get_tree().get_nodes_in_group('tiles'):
+		if tile.coordinates == coordinates and tile.is_visible():
+			return false
+	return true
 
-				state = idle
-				event.character_moved.emit(character)
+
+func reset():
+	Targets.clear()
+	Destinations.clear()
+	target_counter = 0
+	battle.reset()

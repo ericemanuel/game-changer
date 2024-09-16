@@ -27,8 +27,8 @@ func _ready():
 	event.character_unfocused.connect(state_machine.bind(unfocused))
 
 
-func state_machine(object, caller):
-	if object == root:
+func state_machine(entity, caller):
+	if entity == root:
 		match state:
 			idle:
 				match caller:

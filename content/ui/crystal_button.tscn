@@ -1,0 +1,26 @@
+[gd_scene load_steps=4 format=3 uid="uid://dqy2aar0uto"]
+
+[ext_resource type="Texture2D" uid="uid://q0f28ipx1hqn" path="res://content/ui/icon.png" id="1_184e1"]
+[ext_resource type="BitMap" uid="uid://dcye1d3gndkor" path="res://content/ui/icon_mask.png" id="2_qdmlc"]
+[ext_resource type="Script" path="res://content/reactions/button.gd" id="3_ewqyb"]
+
+[node name="button" type="Node2D"]
+
+[node name="sprite" type="Sprite2D" parent="."]
+texture_filter = 1
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("1_184e1")
+
+[node name="button" type="TextureButton" parent="."]
+texture_filter = 1
+offset_left = -13.0
+offset_top = -22.0
+offset_right = 39.0
+offset_bottom = 65.0
+scale = Vector2(0.5, 0.5)
+texture_click_mask = ExtResource("2_qdmlc")
+script = ExtResource("3_ewqyb")
+
+[connection signal="button_down" from="button" to="button" method="_button_down"]
+[connection signal="mouse_entered" from="button" to="button" method="_mouse_entered"]
+[connection signal="mouse_exited" from="button" to="button" method="_mouse_exited"]

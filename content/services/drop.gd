@@ -5,16 +5,15 @@ extends Node
 
 
 func _ready():
-	event.character_dropping.connect(drop)
+	event.entity_dropping.connect(drop)
 
 
-func drop(character):
-	if character == root:
+func drop(entity):
+	if entity == root:
 		root.z_index -= 4
 		player.play('drop')
 
 
 func _animation_finished(animation):
 	if animation == 'drop':
-		#root.queue_free()
-		pass
+		root.queue_free()

@@ -1,10 +1,11 @@
-[gd_scene load_steps=13 format=3 uid="uid://ce43iyxx4njh6"]
+[gd_scene load_steps=14 format=3 uid="uid://ce43iyxx4njh6"]
 
 [ext_resource type="Script" path="res://content/crystals/crystal.gd" id="1_o2ifk"]
 [ext_resource type="Texture2D" uid="uid://6wr3psmv5bko" path="res://content/crystals/crystal.png" id="1_xrs2g"]
 [ext_resource type="Script" path="res://content/crystals/destroy.gd" id="2_41aa2"]
 [ext_resource type="BitMap" uid="uid://b5wdt5qr54yyd" path="res://content/crystals/crystal_mask.png" id="2_bapho"]
 [ext_resource type="Script" path="res://content/reactions/bump.gd" id="3_u2g1i"]
+[ext_resource type="Script" path="res://content/services/drop.gd" id="4_6o44q"]
 [ext_resource type="Script" path="res://content/reactions/button.gd" id="6_176ip"]
 
 [sub_resource type="Animation" id="Animation_a36pm"]
@@ -152,17 +153,20 @@ _data = {
 "idle": SubResource("Animation_nyj2j")
 }
 
-[node name="crystal" type="Node2D" groups=["crystals"]]
+[node name="crystal" type="Node2D" groups=["crystals", "entities"]]
 z_index = 1
 script = ExtResource("1_o2ifk")
 
 [node name="reactions" type="Node" parent="."]
 
+[node name="bump" type="Node" parent="reactions"]
+script = ExtResource("3_u2g1i")
+
 [node name="destroy" type="Node" parent="reactions"]
 script = ExtResource("2_41aa2")
 
-[node name="bump" type="Node" parent="reactions"]
-script = ExtResource("3_u2g1i")
+[node name="drop" type="Node" parent="reactions"]
+script = ExtResource("4_6o44q")
 
 [node name="visuals" type="Node2D" parent="."]
 texture_filter = 1
@@ -194,6 +198,7 @@ offset_right = 6.0
 offset_bottom = -1.0
 grow_horizontal = 2
 grow_vertical = 2
+button_mask = 3
 texture_click_mask = ExtResource("2_bapho")
 script = ExtResource("6_176ip")
 

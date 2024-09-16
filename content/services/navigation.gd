@@ -34,20 +34,19 @@ func get_range(character) -> Array:
 
 func get_point_path(character, tile) -> Array:
 	reset()
-
 	return astar.get_point_path(character.coordinates, tile.coordinates)
 
 
 func reset():
 	for tile in get_tree().get_nodes_in_group('tiles'):
 		astar.set_point_solid(tile.coordinates, false)
-
 		astar.set_point_weight_scale(tile.coordinates, tile.weight)
-		if not tile.visible:
-			astar.set_point_solid(tile.coordinates, true)
 
+		if not tile.is_visible():
+			astar.set_point_solid(tile.coordinates, true)
 
 	for character in get_tree().get_nodes_in_group('characters'):
 		astar.set_point_solid(character.coordinates, true)
+
 	for crystal in get_tree().get_nodes_in_group('crystals'):
 		astar.set_point_solid(crystal.coordinates, true)

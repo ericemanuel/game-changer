@@ -1,0 +1,64 @@
+[gd_scene load_steps=12 format=3 uid="uid://df1b2c1iealb3"]
+
+[ext_resource type="Script" path="res://content/services/target.gd" id="1_iwpk3"]
+[ext_resource type="Script" path="res://content/services/battle.gd" id="1_nehni"]
+[ext_resource type="Script" path="res://content/services/create.gd" id="2_gnta7"]
+[ext_resource type="Script" path="res://content/services/navigation.gd" id="2_teokd"]
+[ext_resource type="PackedScene" uid="uid://dyt665n50ythe" path="res://content/board/board.tscn" id="2_ui23l"]
+[ext_resource type="Script" path="res://content/services/range.gd" id="2_vhlbi"]
+[ext_resource type="Script" path="res://content/services/motion.gd" id="3_4qshd"]
+[ext_resource type="PackedScene" uid="uid://cp71xybl0b4g0" path="res://content/characters/kara.tscn" id="3_mn4fv"]
+[ext_resource type="Script" path="res://content/services/push.gd" id="3_pldil"]
+[ext_resource type="PackedScene" uid="uid://ce43iyxx4njh6" path="res://content/crystals/crystal.tscn" id="6_yt4u2"]
+[ext_resource type="PackedScene" uid="uid://53nawwtynqlh" path="res://content/characters/viera.tscn" id="9_us414"]
+
+[node name="level" type="Node"]
+
+[node name="services" type="Node" parent="."]
+
+[node name="battle" type="Node" parent="services"]
+script = ExtResource("1_nehni")
+
+[node name="target" type="Node" parent="services/battle"]
+script = ExtResource("1_iwpk3")
+
+[node name="create" type="Node" parent="services/battle"]
+script = ExtResource("2_gnta7")
+
+[node name="push" type="Node" parent="services/battle"]
+script = ExtResource("3_pldil")
+
+[node name="navigation" type="Node" parent="services"]
+script = ExtResource("2_teokd")
+
+[node name="range" type="Node" parent="services/navigation"]
+script = ExtResource("2_vhlbi")
+
+[node name="motion" type="Node" parent="services/navigation"]
+script = ExtResource("3_4qshd")
+
+[node name="board" parent="." instance=ExtResource("2_ui23l")]
+position = Vector2(100, 80)
+
+[node name="characters" type="Node" parent="."]
+
+[node name="kara" parent="characters" instance=ExtResource("3_mn4fv")]
+z_index = 20
+position = Vector2(9, 0)
+coordinates = Vector2(2, 3)
+
+[node name="viera" parent="characters" instance=ExtResource("9_us414")]
+position = Vector2(30, 0)
+coordinates = Vector2(5, 4)
+
+[node name="crystals" type="Node" parent="."]
+
+[node name="crystal" parent="crystals" instance=ExtResource("6_yt4u2")]
+z_index = 20
+position = Vector2(52, 0)
+coordinates = Vector2(3, 5)
+
+[node name="crystal2" parent="crystals" instance=ExtResource("6_yt4u2")]
+z_index = 20
+position = Vector2(72, 0)
+coordinates = Vector2(5, 2)

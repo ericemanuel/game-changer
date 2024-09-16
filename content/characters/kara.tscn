@@ -1,6 +1,6 @@
 [gd_scene load_steps=12 format=3 uid="uid://cp71xybl0b4g0"]
 
-[ext_resource type="Script" path="res://content/characters/kara.gd" id="1_dfbsc"]
+[ext_resource type="Script" path="res://content/characters/character.gd" id="1_dfbsc"]
 [ext_resource type="Texture2D" uid="uid://n3p23smlbm2d" path="res://content/characters/kara.png" id="1_p007o"]
 [ext_resource type="Script" path="res://content/reactions/bump.gd" id="2_h4lr2"]
 [ext_resource type="Script" path="res://content/services/drop.gd" id="3_b23co"]
@@ -83,7 +83,7 @@ _data = {
 "drop": SubResource("Animation_ud01j")
 }
 
-[node name="kara" type="Node2D" groups=["characters"]]
+[node name="kara" type="Node2D" groups=["characters", "entities"]]
 z_index = 1
 script = ExtResource("1_dfbsc")
 
@@ -124,9 +124,11 @@ offset_right = 10.0
 offset_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+button_mask = 3
 texture_click_mask = ExtResource("5_145do")
 script = ExtResource("6_24fud")
 
+[connection signal="animation_finished" from="visuals/animation" to="reactions/drop" method="_animation_finished"]
 [connection signal="button_down" from="button" to="button" method="_button_down"]
 [connection signal="mouse_entered" from="button" to="button" method="_mouse_entered"]
 [connection signal="mouse_exited" from="button" to="button" method="_mouse_exited"]

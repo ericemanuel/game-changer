@@ -2,6 +2,7 @@ extends Node
 
 func _ready():
 	hardware.node_selected.connect(select)
+	hardware.node_alt_selected.connect(alt_select)
 	hardware.node_entered.connect (enter)
 	hardware.node_exited.connect  (exit)
 
@@ -18,7 +19,14 @@ func select(node):
 
 	elif node.is_in_group('crystals'):
 		event.crystal_selected.emit(node)
-		#select_tile(node)
+		select_tile(node)
+
+func alt_select(node):
+	if node.is_in_group('tiles'):
+		event.tile_alt_selected.emit(node)
+
+	if node.is_in_group('crystals'):
+		event.crystal_alt_selected.emit(node)
 
 func select_tile(node):
 	for tile in get_tree().get_nodes_in_group('tiles'):

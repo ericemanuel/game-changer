@@ -5,26 +5,41 @@ extends Node
 enum {idle,
 	  character_selected,
 	  character_moving,
-	  character_moved}
+	  crystal_created}
 
 var state: int = idle
+var Character: Node
 
 
 func _ready():
 	event.character_selected.connect(state_machine.bind(character_selected))
-	event.idle.connect              (state_machine.bind(idle))
 	event.character_moving.connect  (state_machine.bind(character_moving))
+	event.crystal_created.connect(state_machine.bind(crystal_created))
 
 
-func state_machine(character, caller):
+func state_machine(entity, caller):
 	match state:
 		idle:
 			match caller:
 				character_selected:
-					show_range(character)
+					Character = entity
+					show_range(Character)
 					state = character_selected
 
 		character_selected:
+			reset()
+
+			match caller:
+				character_selected:
+					if Character == entity:
+						state = idle
+
+					else:
+						Character = entity
+						show_range(Character)
+
+	match caller:
+		crystal_created:
 			reset()
 			state = idle
 

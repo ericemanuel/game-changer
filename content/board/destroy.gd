@@ -15,4 +15,4 @@ func destroy(crystal):
 
 func _animation_finished(animation):
 	if animation == 'drop':
-		root.queue_free()
+		root.visible = false
